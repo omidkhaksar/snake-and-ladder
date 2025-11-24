@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Save Data - Snake & Ladder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #edba58 0%, #cf7541 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #cf7541;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #d4a648 0%, #9e2449 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .success {
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Snake & Ladder</h1>
+        <p>Clear saved game data</p>
+        <button onclick="clearSave()">Clear Save Data</button>
+        <button onclick="goToGame()">Go to Game</button>
+        <p class="success" id="success">✅ Save data cleared!</p>
+    </div>
+
+    <script>
+        function clearSave() {
+            localStorage.removeItem('snakeLadder_gameState');
+            localStorage.removeItem('soundEnabled');
+            document.getElementById('success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('success').style.display = 'none';
+            }, 3000);
+        }
+
+        function goToGame() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake & Ladder - 3D Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Start Menu -->
+    <div id="start-menu" class="start-menu">
+      <div class="start-menu-content">
+        <h1 class="game-title">Snake & Ladder</h1>
+        <p class="game-subtitle">Journey Through Ancient Egypt</p>
+
+        <div class="game-mode-selection">
+          <label>Select Game Mode:</label>
+          <div class="mode-buttons">
+            <button
+              class="mode-btn active"
+              id="mode-vs-computer"
+              data-mode="computer"
+            >
+              <span class="mode-icon">🤖</span>
+              <span class="mode-text">vs Computer</span>
+            </button>
+            <button
+              class="mode-btn"
+              id="mode-multiplayer"
+              data-mode="multiplayer"
+            >
+              <span class="mode-icon">👥</span>
+              <span class="mode-text">Multiplayer</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="player-selection" id="player-selection">
+          <label for="num-players">Select Number of Players:</label>
+          <div class="player-counter">
+            <button class="counter-btn" id="decrease-players">−</button>
+            <div class="player-number-display">
+              <span id="player-count">2</span>
+              <span class="player-label">Players</span>
+            </div>
+            <button class="counter-btn" id="increase-players">+</button>
+          </div>
+        </div>
+
+        <button
+          id="continue-game-btn"
+          class="start-btn continue-btn"
+          style="display: none"
+        >
+          <span>⏩ Continue Game</span>
+        </button>
+
+        <button id="start-game-btn" class="start-btn" disabled>
+          <span>🎮 Start New Game</span>
+        </button>
+
+        <div class="game-instructions">
+          <h3>Quest Through the Pyramids:</h3>
+          <ul>
+            <li>🎲 Roll the dice to advance your journey</li>
+            <li>🪜 Climb ancient ladders to ascend</li>
+            <li>🐍 Beware of sacred serpents sliding down</li>
+            <li>👑 First to reach the Pharaoh's chamber wins!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-container" class="hidden">
+      <!-- Three.js Canvas -->
+      <div id="canvas-container"></div>
+
+      <!-- Game UI Overlay -->
+      <div id="game-ui">
+        <!-- Header -->
+        <div class="header">
+          <h1>Snake & Ladder</h1>
+          <div class="game-info">
+            <span class="current-player"
+              >Current Player:
+              <span id="current-player-name">Player 1</span></span
+            >
+          </div>
+        </div>
+
+        <!-- Player Stats Panel - Dynamically Generated -->
+        <div class="players-panel" id="players-panel">
+          <!-- Player cards will be generated dynamically -->
+        </div>
+
+        <!-- Dice Container -->
+        <div class="dice-container">
+          <div class="dice-display" id="dice-display">
+            <div class="dice-value">?</div>
+          </div>
+          <button class="roll-button" id="roll-button">
+            <span>🎲 Roll Dice</span>
+          </button>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+          <button class="control-btn pause-btn" id="pause-btn">
+            <span>⏸️ Pause</span>
+          </button>
+          <button class="control-btn" id="toggle-camera-btn">
+            <span>📷 Toggle View</span>
+          </button>
+          <button class="control-btn" id="sound-toggle-btn">
+            <span id="sound-icon">🔊</span>
+          </button>
+        </div>
+
+        <!-- Message Display -->
+        <div class="message-display" id="message-display"></div>
+      </div>
+
+      <!-- Info Modal -->
+      <div class="modal" id="info-modal">
+        <div class="modal-content">
+          <span class="close-modal" id="close-modal">&times;</span>
+          <h2>Game Instructions</h2>
+          <div class="modal-body">
+            <h3>How to Play:</h3>
+            <ul>
+              <li>🎲 Click "Roll Dice" to roll the dice</li>
+              <li>🎯 Move your piece according to the dice roll</li>
+              <li>🪜 Climb ladders to advance faster</li>
+              <li>🐍 Avoid snakes that send you back</li>
+              <li>🏆 First player to reach square 100 wins!</li>
+            </ul>
+            <h3>Controls:</h3>
+            <ul>
+              <li>🖱️ Left Click + Drag: Rotate camera</li>
+              <li>🖱️ Right Click + Drag: Pan camera</li>
+              <li>🖱️ Scroll: Zoom in/out</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Winner Modal -->
+      <div class="modal" id="winner-modal">
+        <div class="modal-content winner-content">
+          <h2>🎉 Congratulations! 🎉</h2>
+          <div class="modal-body">
+            <p class="winner-text" id="winner-text">Player 1 Wins!</p>
+            <button class="control-btn" id="play-again-btn">
+              <span>🎮 Play Again</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pause Menu Modal -->
+      <div class="modal pause-menu-modal" id="pause-menu">
+        <div class="modal-content pause-menu-content">
+          <h2>⏸️ Game Paused</h2>
+          <div class="pause-menu-buttons">
+            <button class="pause-menu-btn resume-btn" id="resume-btn">
+              <span class="btn-icon">▶️</span>
+              <span class="btn-text">Resume Game</span>
+            </button>
+            <button class="pause-menu-btn" id="pause-help-btn">
+              <span class="btn-icon">ℹ️</span>
+              <span class="btn-text">Help & Info</span>
+            </button>
+            <button class="pause-menu-btn" id="pause-restart-btn">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">Restart Game</span>
+            </button>
+            <button class="pause-menu-btn exit-btn" id="exit-btn">
+              <span class="btn-icon">🚪</span>
+              <span class="btn-text">Exit to Main Menu</span>
+            </button>
+          </div>
+          <p class="pause-tip">Press ESC or click Resume to continue</p>
+        </div>
+      </div>
+
+      <!-- Confirmation Dialog Modal -->
+      <div class="modal confirmation-modal" id="confirm-modal">
+        <div class="modal-content confirm-content">
+          <div class="confirm-icon" id="confirm-icon">⚠️</div>
+          <h2 id="confirm-title">Confirm Action</h2>
+          <p class="confirm-message" id="confirm-message">Are you sure?</p>
+          <div class="confirm-buttons">
+            <button class="confirm-btn cancel-btn" id="confirm-cancel">
+              <span>Cancel</span>
+            </button>
+            <button class="confirm-btn confirm-btn-primary" id="confirm-yes">
+              <span>Confirm</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bg-music" loop>
+      <source src="/sounds/background-music.mp3" type="audio/mpeg" />
+      <source src="/sounds/background-music.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="click-sound">
+      <source src="/sounds/click.mp3" type="audio/mpeg" />
+      <source src="/sounds/click.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="dice-roll-sound">
+      <source src="/sounds/dice-roll.mp3" type="audio/mpeg" />
+      <source src="/sounds/dice-roll.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="move-sound">
+      <source src="/sounds/move.mp3" type="audio/mpeg" />
+      <source src="/sounds/move.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="ladder-sound">
+      <source src="/sounds/ladder.mp3" type="audio/mpeg" />
+      <source src="/sounds/ladder.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="snake-sound">
+      <source src="/sounds/snake.mp3" type="audio/mpeg" />
+      <source src="/sounds/snake.ogg" type="audio/ogg" />
+    </audio>
+    <audio id="win-sound">
+      <source src="/sounds/win.mp3" type="audio/mpeg" />
+      <source src="/sounds/win.ogg" type="audio/ogg" />
+    </audio>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Snake & Ladder - 3D Game</title>
     <link rel="stylesheet" href="style.css" />
@@ -80,6 +86,20 @@
 
       <!-- Game UI Overlay -->
       <div id="game-ui">
+        <!-- Mobile Toggle Buttons -->
+        <button
+          class="mobile-toggle-btn mobile-players-toggle"
+          id="mobile-players-toggle"
+        >
+          👥
+        </button>
+        <button
+          class="mobile-toggle-btn mobile-menu-toggle"
+          id="mobile-menu-toggle"
+        >
+          ⚙️
+        </button>
+
         <!-- Header -->
         <div class="header">
           <h1>Snake & Ladder</h1>
@@ -91,10 +111,41 @@
           </div>
         </div>
 
-        <!-- Player Stats Panel - Dynamically Generated -->
+        <!-- Player Stats Panel - Side Menu -->
         <div class="players-panel" id="players-panel">
-          <!-- Player cards will be generated dynamically -->
+          <div class="players-menu-header">
+            <h3>👥 Players</h3>
+            <button class="close-players-menu" id="close-players-menu">×</button>
+          </div>
+          <div class="players-menu-content">
+            <!-- Player cards will be generated dynamically -->
+          </div>
         </div>
+
+        <!-- Mobile Side Menu -->
+        <div class="mobile-side-menu" id="mobile-side-menu">
+          <div class="mobile-menu-header">
+            <h3>⚙️ Controls</h3>
+            <button class="close-mobile-menu" id="close-mobile-menu">×</button>
+          </div>
+          <div class="mobile-menu-content">
+            <button class="mobile-control-btn" id="mobile-pause-btn">
+              ⏸️ Pause Game
+            </button>
+            <button class="mobile-control-btn" id="mobile-toggle-camera-btn">
+              📷 Toggle Camera
+            </button>
+            <button class="mobile-control-btn" id="mobile-sound-toggle-btn">
+              <span id="mobile-sound-icon">🔊</span> Sound
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+        
+        <!-- Players Panel Overlay -->
+        <div class="players-panel-overlay" id="players-panel-overlay"></div>
 
         <!-- Dice Container -->
         <div class="dice-container">

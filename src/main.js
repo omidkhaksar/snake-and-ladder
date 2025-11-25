@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { AudioManager } from "./AudioManager.js";
 import { Board } from "./Board.js";
 import { GameState } from "./GameState.js";
 import { Ladder } from "./Ladder.js";
 import { Player } from "./Player.js";
-import { Snake } from "./Snake.js";
-import { AudioManager } from "./AudioManager.js";
 import { SaveManager } from "./SaveManager.js";
+import { Snake } from "./Snake.js";
 import {
   CAMERA_SETTINGS,
   LADDERS,
@@ -139,16 +139,18 @@ class Game3D {
 
     // Start animation loop
     this.animate();
-    
+
     // Try to load saved game state after a short delay (async, non-blocking)
     setTimeout(() => {
-      this.loadGameState().then((wasLoaded) => {
-        if (!wasLoaded) {
-          this.saveGameState();
-        }
-      }).catch(error => {
-        console.error('Error loading game state:', error);
-      });
+      this.loadGameState()
+        .then((wasLoaded) => {
+          if (!wasLoaded) {
+            this.saveGameState();
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading game state:", error);
+        });
     }, 100);
   }
 
@@ -162,13 +164,13 @@ class Game3D {
       currentPlayer: this.gameState.currentPlayer,
       gameOver: this.gameState.gameOver,
       winner: this.gameState.winner,
-      players: this.players.map(player => ({
+      players: this.players.map((player) => ({
         playerNumber: player.playerNumber,
         position: player.position,
         moves: player.moves,
         snakes: player.snakes,
         ladders: player.ladders,
-      }))
+      })),
     };
     this.saveManager.saveGame(gameData);
   }
@@ -182,9 +184,11 @@ class Game3D {
       const savedData = this.saveManager.loadGame();
       if (savedData && savedData.players) {
         // Validate save data matches current game setup
-        if (savedData.numPlayers !== this.numPlayers || 
-            savedData.players.length !== this.players.length) {
-          console.warn('Save data mismatch, clearing save');
+        if (
+          savedData.numPlayers !== this.numPlayers ||
+          savedData.players.length !== this.players.length
+        ) {
+          console.warn("Save data mismatch, clearing save");
           this.saveManager.clearSave();
           return false;
         }
@@ -202,27 +206,42 @@ class Game3D {
             this.players[index].snakes = savedPlayer.snakes;
             this.players[index].ladders = savedPlayer.ladders;
             // Update player position without animation
-            this.players[index].updatePosition(savedPlayer.position, false, this.players);
+            this.players[index].updatePosition(
+              savedPlayer.position,
+              false,
+              this.players
+            );
           }
         });
 
         // Update UI with loaded state
         this.updateUI();
-        
+
         // Show restoration message
-        const totalMoves = savedData.players.reduce((sum, p) => sum + p.moves, 0);
-        showMessage(`✨ Game Restored! ${totalMoves} move${totalMoves !== 1 ? 's' : ''} played.`);
-        
+        const totalMoves = savedData.players.reduce(
+          (sum, p) => sum + p.moves,
+          0
+        );
+        showMessage(
+          `✨ Game Restored! ${totalMoves} move${
+            totalMoves !== 1 ? "s" : ""
+          } played.`
+        );
+
         // If it's computer's turn, trigger roll after delay
-        if (this.isVsComputer && this.gameState.currentPlayer === 2 && !this.gameState.gameOver) {
+        if (
+          this.isVsComputer &&
+          this.gameState.currentPlayer === 2 &&
+          !this.gameState.gameOver
+        ) {
           await delay(2000); // Give time to see restored state
           await this.handleDiceRoll();
         }
-        
+
         return true;
       }
     } catch (error) {
-      console.error('Error loading game state:', error);
+      console.error("Error loading game state:", error);
       // Clear corrupted save
       this.saveManager.clearSave();
     }
@@ -277,12 +296,20 @@ class Game3D {
   setupUI() {
     // Create player cards
     const playersPanel = document.getElementById("players-panel");
-    playersPanel.innerHTML = "";
+    const playersMenuContent = playersPanel.querySelector(".players-menu-content");
+    playersMenuContent.innerHTML = "";
+
+    // Add compact class for 5+ players
+    if (this.numPlayers >= 5) {
+      playersPanel.classList.add("compact");
+    } else {
+      playersPanel.classList.remove("compact");
+    }
 
     for (let i = 1; i <= this.numPlayers; i++) {
       const colorConfig = PLAYER_COLORS[i - 1];
       const card = this.createPlayerCard(i, colorConfig);
-      playersPanel.appendChild(card);
+      playersMenuContent.appendChild(card);
     }
 
     // Update current player display
@@ -301,7 +328,10 @@ class Game3D {
     card.id = `player-${playerNum}-card`;
 
     const color = `#${colorConfig.main.toString(16).padStart(6, "0")}`;
-    const playerName = this.isVsComputer && playerNum === 2 ? "🤖 Computer" : `Player ${playerNum}`;
+    const playerName =
+      this.isVsComputer && playerNum === 2
+        ? "🤖 Computer"
+        : `Player ${playerNum}`;
 
     card.innerHTML = `
       <div class="player-header">
@@ -406,6 +436,122 @@ class Game3D {
         const enabled = this.audioManager.toggle();
         const soundIcon = document.getElementById("sound-icon");
         soundIcon.textContent = enabled ? "🔊" : "🔇";
+        if (enabled) {
+          this.audioManager.playClick();
+        }
+      });
+
+    // Mobile players toggle
+    document
+      .getElementById("mobile-players-toggle")
+      .addEventListener("click", () => {
+        this.audioManager.playClick();
+        const playersPanel = document.getElementById("players-panel");
+        const playersOverlay = document.getElementById("players-panel-overlay");
+        const isOpen = playersPanel.classList.contains("show");
+        
+        if (isOpen) {
+          playersPanel.classList.remove("show");
+          playersOverlay.classList.remove("active");
+        } else {
+          playersPanel.classList.add("show");
+          playersOverlay.classList.add("active");
+        }
+
+        // Close side menu if open
+        const mobileMenu = document.getElementById("mobile-side-menu");
+        const overlay = document.getElementById("mobile-menu-overlay");
+        mobileMenu.classList.remove("open");
+        overlay.classList.remove("active");
+      });
+
+    // Mobile menu toggle
+    document
+      .getElementById("mobile-menu-toggle")
+      .addEventListener("click", () => {
+        this.audioManager.playClick();
+        const mobileMenu = document.getElementById("mobile-side-menu");
+        const overlay = document.getElementById("mobile-menu-overlay");
+        mobileMenu.classList.add("open");
+        overlay.classList.add("active");
+
+        // Close players panel if open
+        const playersPanel = document.getElementById("players-panel");
+        const playersOverlay = document.getElementById("players-panel-overlay");
+        playersPanel.classList.remove("show");
+        playersOverlay.classList.remove("active");
+      });
+
+    // Close mobile menu button
+    document
+      .getElementById("close-mobile-menu")
+      .addEventListener("click", () => {
+        this.audioManager.playClick();
+        this.closeMobileMenu();
+      });
+
+    // Close players menu button
+    document
+      .getElementById("close-players-menu")
+      .addEventListener("click", () => {
+        this.audioManager.playClick();
+        const playersPanel = document.getElementById("players-panel");
+        const playersOverlay = document.getElementById("players-panel-overlay");
+        playersPanel.classList.remove("show");
+        playersOverlay.classList.remove("active");
+      });
+
+    // Players panel overlay click
+    document
+      .getElementById("players-panel-overlay")
+      .addEventListener("click", () => {
+        const playersPanel = document.getElementById("players-panel");
+        const playersOverlay = document.getElementById("players-panel-overlay");
+        playersPanel.classList.remove("show");
+        playersOverlay.classList.remove("active");
+      });
+
+    // Mobile menu overlay click
+    document
+      .getElementById("mobile-menu-overlay")
+      .addEventListener("click", () => {
+        this.closeMobileMenu();
+        // Also close players panel
+        const playersPanel = document.getElementById("players-panel");
+        const playersOverlay = document.getElementById("players-panel-overlay");
+        playersPanel.classList.remove("show");
+        playersOverlay.classList.remove("active");
+      });
+
+    // Mobile pause button
+    document
+      .getElementById("mobile-pause-btn")
+      .addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.audioManager.playClick();
+        this.pauseGame();
+        this.closeMobileMenu();
+      });
+
+    // Mobile camera toggle
+    document
+      .getElementById("mobile-toggle-camera-btn")
+      .addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.audioManager.playClick();
+        this.toggleCameraView();
+      });
+
+    // Mobile sound toggle
+    document
+      .getElementById("mobile-sound-toggle-btn")
+      .addEventListener("click", (e) => {
+        e.stopPropagation();
+        const enabled = this.audioManager.toggle();
+        const mobileIcon = document.getElementById("mobile-sound-icon");
+        const desktopIcon = document.getElementById("sound-icon");
+        mobileIcon.textContent = enabled ? "🔊" : "🔇";
+        desktopIcon.textContent = enabled ? "🔊" : "🔇";
         if (enabled) {
           this.audioManager.playClick();
         }
@@ -521,12 +667,22 @@ class Game3D {
   }
 
   /**
+   * Close mobile menu
+   */
+  closeMobileMenu() {
+    const mobileMenu = document.getElementById("mobile-side-menu");
+    const overlay = document.getElementById("mobile-menu-overlay");
+    mobileMenu.classList.remove("open");
+    overlay.classList.remove("active");
+  }
+
+  /**
    * Exit to main menu
    */
   exitToMainMenu() {
     // Clear saved game
     this.saveManager.clearSave();
-    
+
     // Clean up
     this.cleanup();
 
@@ -575,15 +731,21 @@ class Game3D {
     document.getElementById("roll-button").disabled = true;
 
     const diceValue = await this.rollDice();
-    const playerName = this.isVsComputer && this.gameState.currentPlayer === 2 
-      ? "Computer" 
-      : `Player ${this.gameState.currentPlayer}`;
+    const playerName =
+      this.isVsComputer && this.gameState.currentPlayer === 2
+        ? "Computer"
+        : `Player ${this.gameState.currentPlayer}`;
     showMessage(`${playerName} rolled ${diceValue}!`);
 
     await delay(800);
 
     const player = this.players[this.gameState.currentPlayer - 1];
-    const result = await this.gameState.handleMove(player, diceValue, this.players, this.audioManager);
+    const result = await this.gameState.handleMove(
+      player,
+      diceValue,
+      this.players,
+      this.audioManager
+    );
 
     if (result.won) {
       this.showWinner(this.gameState.winner);
@@ -594,7 +756,7 @@ class Game3D {
       // If invalid (can't reach exactly 100), player loses their turn
       await delay(500);
       this.gameState.switchPlayer();
-      
+
       // Save game state after each move (only if game continues)
       this.saveGameState();
     }
@@ -604,7 +766,11 @@ class Game3D {
     document.getElementById("roll-button").disabled = this.gameState.gameOver;
 
     // If it's now the computer's turn, automatically roll after a short delay
-    if (this.isVsComputer && this.gameState.currentPlayer === 2 && !this.gameState.gameOver) {
+    if (
+      this.isVsComputer &&
+      this.gameState.currentPlayer === 2 &&
+      !this.gameState.gameOver
+    ) {
       await delay(1000); // Give user time to see the transition
       await this.handleDiceRoll(); // Computer rolls automatically
     }
@@ -644,9 +810,10 @@ class Game3D {
    */
   updateUI() {
     // Update current player
-    const playerName = this.isVsComputer && this.gameState.currentPlayer === 2 
-      ? "🤖 Computer" 
-      : `Player ${this.gameState.currentPlayer}`;
+    const playerName =
+      this.isVsComputer && this.gameState.currentPlayer === 2
+        ? "🤖 Computer"
+        : `Player ${this.gameState.currentPlayer}`;
     document.getElementById("current-player-name").textContent = playerName;
 
     // Update player cards
@@ -664,11 +831,13 @@ class Game3D {
 
     // Enable/disable roll button
     const rollButton = document.getElementById("roll-button");
-    
+
     // Disable button if it's the computer's turn or game is over/moving
-    const isComputerTurn = this.isVsComputer && this.gameState.currentPlayer === 2;
-    rollButton.disabled = this.gameState.isMoving || this.gameState.gameOver || isComputerTurn;
-    
+    const isComputerTurn =
+      this.isVsComputer && this.gameState.currentPlayer === 2;
+    rollButton.disabled =
+      this.gameState.isMoving || this.gameState.gameOver || isComputerTurn;
+
     // Update button text when it's computer's turn
     const buttonText = rollButton.querySelector("span");
     if (isComputerTurn) {
@@ -684,12 +853,13 @@ class Game3D {
   showWinner(playerNumber) {
     const modal = document.getElementById("winner-modal");
     const winnerText = document.getElementById("winner-text");
-    const winnerName = this.isVsComputer && playerNumber === 2 
-      ? "🤖 Computer" 
-      : `Player ${playerNumber}`;
+    const winnerName =
+      this.isVsComputer && playerNumber === 2
+        ? "🤖 Computer"
+        : `Player ${playerNumber}`;
     winnerText.textContent = `${winnerName} Wins! 🎉`;
     modal.classList.add("show");
-    
+
     // Play win sound
     this.audioManager.playWin();
   }
@@ -700,7 +870,7 @@ class Game3D {
   async restartGame() {
     // Clear saved game
     this.saveManager.clearSave();
-    
+
     this.gameState.reset();
     document.querySelector(".dice-value").textContent = "?";
 
@@ -709,12 +879,16 @@ class Game3D {
     }
 
     this.updateUI();
-    
+
     // Save initial game state
     this.saveGameState();
-    
+
     // If it's computer's turn after restart, trigger roll
-    if (this.isVsComputer && this.gameState.currentPlayer === 2 && !this.gameState.gameOver) {
+    if (
+      this.isVsComputer &&
+      this.gameState.currentPlayer === 2 &&
+      !this.gameState.gameOver
+    ) {
       await delay(1000);
       await this.handleDiceRoll();
     }
@@ -755,25 +929,34 @@ class Game3D {
    */
   setupMobileOptimizations() {
     // Detect if device is mobile/touch
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
     if (isTouchDevice) {
       // Prevent pull-to-refresh on mobile
-      document.body.addEventListener('touchmove', (e) => {
-        if (e.target === document.body) {
-          e.preventDefault();
-        }
-      }, { passive: false });
+      document.body.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.target === document.body) {
+            e.preventDefault();
+          }
+        },
+        { passive: false }
+      );
 
       // Prevent double-tap zoom
       let lastTouchEnd = 0;
-      document.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-          e.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, false);
+      document.addEventListener(
+        "touchend",
+        (e) => {
+          const now = Date.now();
+          if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+          }
+          lastTouchEnd = now;
+        },
+        false
+      );
 
       // Adjust camera controls for touch
       if (this.controls) {
@@ -786,7 +969,7 @@ class Game3D {
     }
 
     // Adjust renderer size on orientation change
-    window.addEventListener('orientationchange', () => {
+    window.addEventListener("orientationchange", () => {
       setTimeout(() => {
         this.onWindowResize();
       }, 200);
@@ -798,9 +981,9 @@ class Game3D {
    */
   animate() {
     requestAnimationFrame(() => this.animate());
-    
+
     if (this.controls) {
-    this.controls.update();
+      this.controls.update();
     }
 
     // Rotate player pieces (disabled for 3D models)
@@ -853,18 +1036,20 @@ window.addEventListener("DOMContentLoaded", () => {
     continueBtn.style.display = "block";
     const saveTime = saveManager.getFormattedSaveTime();
     if (saveTime) {
-      continueBtn.querySelector("span").textContent = `⏩ Continue Game (${saveTime})`;
+      continueBtn.querySelector(
+        "span"
+      ).textContent = `⏩ Continue Game (${saveTime})`;
     }
   }
 
   // Handle mode selection
   function selectMode(mode) {
     selectedMode = mode;
-    
+
     // Update button states
     modeVsComputer.classList.toggle("active", mode === "computer");
     modeMultiplayer.classList.toggle("active", mode === "multiplayer");
-    
+
     // Show/hide player selection based on mode
     if (mode === "computer") {
       playerSelection.style.display = "none";
@@ -918,14 +1103,14 @@ window.addEventListener("DOMContentLoaded", () => {
   // Continue game
   continueBtn.addEventListener("click", async () => {
     menuAudio.playClick();
-    
+
     // Load saved game data to get settings
     const savedData = saveManager.loadGame();
-    
+
     if (savedData) {
       selectedPlayers = savedData.numPlayers || 2;
       selectedMode = savedData.isVsComputer ? "computer" : "multiplayer";
-      
+
       startMenu.classList.add("hidden");
       gameContainer.classList.remove("hidden");
 
@@ -939,10 +1124,10 @@ window.addEventListener("DOMContentLoaded", () => {
   startBtn.addEventListener("click", async () => {
     if (selectedPlayers >= MIN_PLAYERS && selectedPlayers <= MAX_PLAYERS) {
       menuAudio.playClick();
-      
+
       // Clear any existing save when starting new game
       saveManager.clearSave();
-      
+
       startMenu.classList.add("hidden");
       gameContainer.classList.remove("hidden");
 

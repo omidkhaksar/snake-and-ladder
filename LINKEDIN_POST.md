@@ -2,7 +2,7 @@
 
 ---
 
-## 🎲 Excited to Share: 3D Snake & Ladder Game with AI! 
+## 🎲 Excited to Share: 3D Snake & Ladder Game with AI!
 
 I'm thrilled to announce the completion of my latest project - a fully-featured 3D Snake & Ladder game built entirely with **Three.js** and modern web technologies! 🚀
 
@@ -80,6 +80,7 @@ The entire codebase is open-source and well-documented with guides for customiza
 ---
 
 📸 Swipe to see screenshots of:
+
 1. Main menu with game mode selection
 2. 3D board with Egyptian theme
 3. Active gameplay with multiple players
@@ -89,4 +90,3 @@ The entire codebase is open-source and well-documented with guides for customiza
 ---
 
 #WebDevelopment #Coding #Programming #SoftwareEngineering #TechProjects #Portfolio #LearningInPublic #100DaysOfCode
-

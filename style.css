@@ -809,39 +809,686 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+
+/* Tablet Portrait and Landscape (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .start-menu-content {
+        padding: 40px;
+        max-width: 500px;
+        margin: 0 20px;
+    }
+
+    .game-title {
+        font-size: 2.8em;
+    }
+
+    .game-subtitle {
+        font-size: 1.1em;
+    }
+
     .header h1 {
-        font-size: 1.8em;
+        font-size: 2em;
     }
 
     .players-panel {
-        top: 120px;
+        top: 100px;
         left: 10px;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
     }
 
     .player-card {
-        width: 220px;
-        padding: 15px;
+        width: 240px;
+        padding: 12px;
+        margin-bottom: 8px;
     }
 
     .dice-container {
-        bottom: 100px;
-        right: 20px;
-    }
-
-    .dice-value {
-        font-size: 3em;
-        min-width: 60px;
+        bottom: 20px;
+        right: 15px;
     }
 
     .controls {
+        bottom: 15px;
+        left: 15px;
+    }
+}
+
+/* Tablet Portrait and Mobile Landscape (max-width: 768px) */
+@media (max-width: 768px) {
+    /* Start Menu */
+    .start-menu-content {
+        padding: 30px 20px;
+        max-width: 90%;
+        border-radius: 20px;
+    }
+
+    .game-title {
+        font-size: 2.2em;
+        margin-bottom: 8px;
+    }
+
+    .game-subtitle {
+        font-size: 1em;
+        margin-bottom: 25px;
+    }
+
+    .game-mode-selection label {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+    }
+
+    .mode-buttons {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+    }
+
+    .mode-btn {
+        max-width: 100%;
+        padding: 18px;
+    }
+
+    .mode-btn .mode-icon {
+        font-size: 2em;
+    }
+
+    .mode-btn .mode-text {
+        font-size: 1em;
+    }
+
+    .player-selection label {
+        font-size: 1.2em;
+    }
+
+    .player-counter {
+        gap: 20px;
+    }
+
+    .counter-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8em;
+    }
+
+    .player-number-display {
+        font-size: 2.5em;
+    }
+
+    .player-label {
+        font-size: 0.9em;
+    }
+
+    .start-btn {
+        padding: 15px 40px;
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+
+    .continue-btn {
+        padding: 15px 40px;
+        font-size: 1.1em;
+    }
+
+    .game-instructions {
+        padding: 20px;
+    }
+
+    .game-instructions h3 {
+        font-size: 1.2em;
+    }
+
+    .game-instructions ul {
+        font-size: 0.95em;
+    }
+
+    /* Game UI */
+    .header {
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .game-info {
+        font-size: 0.9em;
+    }
+
+    .players-panel {
+        top: 110px;
+        left: 10px;
+        right: auto;
+        max-height: calc(100vh - 280px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .player-card {
+        width: 200px;
+        padding: 10px;
+        margin-bottom: 8px;
+    }
+
+    .player-header {
+        gap: 8px;
+    }
+
+    .player-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1em;
+    }
+
+    .player-info h3 {
+        font-size: 1em;
+    }
+
+    .player-info .position {
+        font-size: 0.85em;
+    }
+
+    .player-stats {
+        gap: 6px;
+    }
+
+    .stat {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-label {
+        font-size: 0.75em;
+    }
+
+    .stat-value {
+        font-size: 1em;
+    }
+
+    .dice-container {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .dice-display {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+    }
+
+    .dice-value {
+        font-size: 2.5em;
+    }
+
+    .roll-button {
+        padding: 12px 24px;
+        font-size: 1em;
+    }
+
+    .controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        bottom: 15px;
+        left: 10px;
+        right: auto;
     }
 
     .control-btn {
+        padding: 10px 16px;
+        font-size: 0.85em;
+        min-width: 80px;
+    }
+
+    .message-display {
+        top: auto;
+        bottom: 110px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        font-size: 1em;
+        max-width: 80%;
+    }
+
+    /* Modals */
+    .modal-content {
+        width: 90%;
+        max-width: 400px;
+        padding: 25px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+
+    .modal-body {
+        font-size: 0.95em;
+    }
+
+    .pause-menu-btn {
+        padding: 15px;
+        font-size: 1em;
+    }
+
+    .confirm-content {
+        padding: 25px;
+    }
+
+    .confirm-icon {
+        font-size: 2.5em;
+    }
+
+    .confirm-buttons {
+        flex-direction: column;
+    }
+
+    .confirm-btn {
+        width: 100%;
+    }
+}
+
+/* Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+    /* Start Menu - Optimized for small screens */
+    .start-menu-content {
+        padding: 20px 15px;
+        max-width: 95%;
+        border-radius: 15px;
+    }
+
+    .game-title {
+        font-size: 1.8em;
+        margin-bottom: 5px;
+    }
+
+    .game-subtitle {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+
+    .game-mode-selection {
+        margin-bottom: 20px;
+    }
+
+    .game-mode-selection label {
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+
+    .mode-btn {
+        padding: 15px;
+    }
+
+    .mode-btn .mode-icon {
+        font-size: 1.8em;
+    }
+
+    .mode-btn .mode-text {
+        font-size: 0.95em;
+    }
+
+    .player-selection {
+        margin-bottom: 25px;
+    }
+
+    .player-selection label {
+        font-size: 1.1em;
+    }
+
+    .player-counter {
+        gap: 15px;
+    }
+
+    .counter-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.6em;
+        border-width: 2px;
+    }
+
+    .player-number-display {
+        font-size: 2em;
+    }
+
+    .player-label {
+        font-size: 0.8em;
+    }
+
+    .start-btn,
+    .continue-btn {
+        padding: 12px 30px;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        border-radius: 40px;
+    }
+
+    .game-instructions {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .game-instructions h3 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    .game-instructions ul {
+        font-size: 0.9em;
+        gap: 8px;
+    }
+
+    .game-instructions li {
+        padding: 8px;
+    }
+
+    /* Game UI - Mobile Optimized */
+    .header {
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 1.3em;
+    }
+
+    .game-info {
+        font-size: 0.85em;
+    }
+
+    .current-player {
+        font-size: 0.9em;
+    }
+
+    /* Stack player cards vertically on mobile */
+    .players-panel {
+        top: 90px;
+        left: 5px;
+        right: 5px;
+        max-height: calc(100vh - 250px);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .player-card {
+        width: 100%;
+        max-width: 180px;
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+
+    .player-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 1em;
+    }
+
+    .player-info h3 {
+        font-size: 0.9em;
+    }
+
+    .player-info .position {
+        font-size: 0.75em;
+    }
+
+    .stat-label {
+        font-size: 0.7em;
+    }
+
+    .stat-value {
+        font-size: 0.9em;
+    }
+
+    /* Dice - Bottom Center on Mobile */
+    .dice-container {
+        bottom: 10px;
+        right: 10px;
+        left: auto;
+    }
+
+    .dice-display {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 8px;
+    }
+
+    .dice-value {
+        font-size: 2em;
+    }
+
+    .roll-button {
         padding: 10px 20px;
         font-size: 0.9em;
+        border-radius: 20px;
+    }
+
+    /* Controls - Compact */
+    .controls {
+        flex-direction: column;
+        gap: 6px;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .control-btn {
+        padding: 8px 14px;
+        font-size: 0.8em;
+        min-width: 70px;
+        border-radius: 15px;
+    }
+
+    /* Messages - Centered */
+    .message-display {
+        bottom: 100px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+        padding: 10px 15px;
+        font-size: 0.9em;
+        max-width: none;
+        border-radius: 15px;
+    }
+
+    /* Modals - Full Width on Mobile */
+    .modal-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 12px;
+    }
+
+    .modal-body {
+        font-size: 0.9em;
+    }
+
+    .modal-body h3 {
+        font-size: 1.1em;
+    }
+
+    .modal-body ul {
+        font-size: 0.85em;
+    }
+
+    .modal-body li {
+        margin-bottom: 6px;
+    }
+
+    .close-modal {
+        font-size: 2em;
+        top: 8px;
+        right: 8px;
+    }
+
+    /* Pause Menu */
+    .pause-menu-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 25px 20px;
+    }
+
+    .pause-menu-content h2 {
+        font-size: 1.6em;
+    }
+
+    .pause-menu-btn {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .btn-icon {
+        font-size: 1.3em;
+    }
+
+    .btn-text {
+        font-size: 0.95em;
+    }
+
+    .pause-tip {
+        font-size: 0.85em;
+    }
+
+    /* Winner Modal */
+    .winner-content {
+        padding: 25px;
+    }
+
+    .winner-content h2 {
+        font-size: 1.8em;
+    }
+
+    .winner-text {
+        font-size: 1.3em;
+    }
+
+    /* Confirmation Dialog */
+    .confirm-content {
+        padding: 20px;
+    }
+
+    .confirm-icon {
+        font-size: 2.2em;
+    }
+
+    #confirm-title {
+        font-size: 1.4em;
+    }
+
+    .confirm-message {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .confirm-btn {
+        padding: 12px 24px;
+        font-size: 1em;
+    }
+}
+
+/* Landscape Mode for Small Devices */
+@media (max-height: 500px) and (orientation: landscape) {
+    .start-menu-content {
+        padding: 15px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .game-title {
+        font-size: 1.5em;
+    }
+
+    .game-subtitle {
+        font-size: 0.85em;
+        margin-bottom: 15px;
+    }
+
+    .game-instructions {
+        display: none; /* Hide instructions in landscape to save space */
+    }
+
+    .header {
+        padding: 8px;
+    }
+
+    .header h1 {
+        font-size: 1.2em;
+    }
+
+    .players-panel {
+        top: 60px;
+        max-height: calc(100vh - 140px);
+    }
+
+    .player-card {
+        padding: 6px;
+        margin-bottom: 4px;
+    }
+
+    .dice-container {
+        bottom: 8px;
+        right: 8px;
+    }
+
+    .controls {
+        bottom: 8px;
+        left: 8px;
+    }
+
+    .message-display {
+        bottom: 80px;
+        padding: 8px 15px;
+        font-size: 0.85em;
+    }
+}
+
+/* Touch Device Improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger tap targets for touch */
+    .mode-btn,
+    .counter-btn,
+    .start-btn,
+    .continue-btn,
+    .roll-button,
+    .control-btn,
+    .pause-menu-btn,
+    .confirm-btn {
+        min-height: 44px; /* iOS/Android minimum tap target */
+        min-width: 44px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .mode-btn:hover,
+    .counter-btn:hover,
+    .start-btn:hover,
+    .roll-button:hover,
+    .control-btn:hover {
+        transform: none;
+    }
+
+    /* Add active state for touch feedback */
+    .mode-btn:active,
+    .counter-btn:active,
+    .start-btn:active,
+    .roll-button:active,
+    .control-btn:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    /* Better scrolling on touch devices */
+    .players-panel,
+    .modal-body,
+    .start-menu-content {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
     }
 }
 
@@ -855,501 +1502,3 @@ body {
     animation: pulse 1.5s ease-in-out infinite;
 }
 
-
-/* ========================================
-   COMPREHENSIVE RESPONSIVE DESIGN
-   ======================================== */
-
-/* Tablet Landscape (1024px and below) */
-@media screen and (max-width: 1024px) {
-    .start-menu-content {
-        padding: 40px 30px;
-        max-width: 85%;
-    }
-
-    .game-title {
-        font-size: 2.8em;
-    }
-
-    .players-panel {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-    }
-
-    .player-card {
-        min-width: 200px;
-        max-width: 250px;
-    }
-}
-
-/* Tablet Portrait (768px and below) */
-@media screen and (max-width: 768px) {
-    .start-menu-content {
-        padding: 30px 25px;
-        max-width: 90%;
-    }
-
-    .game-title {
-        font-size: 2.3em;
-    }
-
-    .game-subtitle {
-        font-size: 1.1em;
-    }
-
-    .header h1 {
-        font-size: 1.5em;
-    }
-
-    .dice-container, .controls {
-        bottom: 15px;
-    }
-}
-
-/* Mobile Landscape (max 767px in landscape) */
-@media screen and (max-width: 767px) and (orientation: landscape) {
-    .start-menu-content {
-        max-height: 90vh;
-        overflow-y: auto;
-        padding: 20px;
-    }
-
-    .game-title {
-        font-size: 1.8em;
-        margin-bottom: 8px;
-    }
-
-    .game-subtitle {
-        font-size: 0.9em;
-        margin-bottom: 15px;
-    }
-
-    .game-instructions {
-        font-size: 0.8em;
-    }
-
-    .players-panel {
-        top: 55px;
-        left: 10px;
-        max-width: 180px;
-        gap: 8px;
-    }
-
-    .player-card {
-        min-width: 160px;
-        padding: 8px;
-    }
-
-    .player-avatar {
-        width: 30px;
-        height: 30px;
-    }
-
-    .stat-label, .stat-value {
-        font-size: 0.7em;
-    }
-
-    .dice-display {
-        width: 55px;
-        height: 55px;
-    }
-
-    .dice-value {
-        font-size: 1.8em;
-    }
-
-    .roll-button {
-        padding: 10px 18px;
-        font-size: 0.85em;
-    }
-
-    .control-btn {
-        padding: 8px 12px;
-        font-size: 0.8em;
-    }
-}
-
-/* Mobile Portrait (480px and below) */
-@media screen and (max-width: 480px) {
-    /* Start Menu Mobile */
-    .start-menu-content {
-        padding: 25px 20px;
-        max-width: 95%;
-        border-radius: 20px;
-    }
-
-    .game-title {
-        font-size: 2em;
-        margin-bottom: 5px;
-    }
-
-    .game-subtitle {
-        font-size: 0.95em;
-        margin-bottom: 20px;
-    }
-
-    .mode-buttons {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .mode-btn {
-        max-width: 100%;
-        padding: 15px;
-    }
-
-    .mode-icon {
-        font-size: 2em;
-    }
-
-    .player-counter {
-        gap: 15px;
-    }
-
-    .counter-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.6em;
-    }
-
-    .player-number-display {
-        width: 75px;
-        height: 75px;
-    }
-
-    #player-count {
-        font-size: 1.8em;
-    }
-
-    .start-btn, .continue-btn {
-        padding: 14px 35px;
-        font-size: 1.1em;
-    }
-
-    .game-instructions {
-        font-size: 0.8em;
-        margin-top: 20px;
-    }
-
-    .game-instructions li {
-        margin-bottom: 6px;
-    }
-
-    /* Game UI Mobile */
-    .header {
-        padding: 10px;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .header h1 {
-        font-size: 1.1em;
-    }
-
-    .game-info {
-        font-size: 0.75em;
-    }
-
-    /* Players Panel - Bottom Stack */
-    .players-panel {
-        position: fixed;
-        top: auto;
-        bottom: 100px;
-        left: 10px;
-        right: 10px;
-        flex-direction: row;
-        overflow-x: auto;
-        overflow-y: visible;
-        gap: 10px;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        max-height: 140px;
-        flex-wrap: nowrap;
-        backdrop-filter: blur(10px);
-    }
-
-    .player-card {
-        min-width: 140px;
-        max-width: 140px;
-        flex-shrink: 0;
-        padding: 8px;
-    }
-
-    .player-avatar {
-        width: 28px;
-        height: 28px;
-    }
-
-    .player-info h3 {
-        font-size: 0.85em;
-    }
-
-    .position {
-        font-size: 0.7em;
-    }
-
-    .player-stats {
-        gap: 4px;
-        margin-top: 6px;
-    }
-
-    .stat {
-        padding: 4px 6px;
-    }
-
-    .stat-label {
-        font-size: 0.65em;
-    }
-
-    .stat-value {
-        font-size: 0.8em;
-    }
-
-    /* Dice and Controls Mobile */
-    .dice-container {
-        bottom: 10px;
-        right: 10px;
-        gap: 8px;
-        flex-direction: row;
-    }
-
-    .dice-display {
-        width: 48px;
-        height: 48px;
-    }
-
-    .dice-value {
-        font-size: 1.5em;
-    }
-
-    .roll-button {
-        padding: 10px 18px;
-        font-size: 0.85em;
-    }
-
-    .controls {
-        bottom: 10px;
-        left: 10px;
-        gap: 6px;
-        flex-direction: row;
-    }
-
-    .control-btn {
-        padding: 9px 11px;
-        font-size: 0.75em;
-    }
-
-    /* Message Display Mobile */
-    .message-display {
-        font-size: 0.95em;
-        padding: 10px 18px;
-        max-width: 90%;
-        top: 50px;
-    }
-
-    /* Modals Mobile */
-    .modal-content {
-        max-width: 95%;
-        padding: 20px 15px;
-        margin: 10px;
-    }
-
-    .modal-content h2 {
-        font-size: 1.4em;
-    }
-
-    .modal-body {
-        font-size: 0.85em;
-    }
-
-    .pause-menu-btn {
-        padding: 14px 18px;
-        font-size: 0.9em;
-    }
-
-    .confirm-btn {
-        padding: 11px 18px;
-        font-size: 0.9em;
-    }
-}
-
-/* Small Mobile (360px and below) */
-@media screen and (max-width: 360px) {
-    .game-title {
-        font-size: 1.7em;
-    }
-
-    .game-subtitle {
-        font-size: 0.85em;
-    }
-
-    .mode-btn {
-        padding: 12px;
-    }
-
-    .player-number-display {
-        width: 65px;
-        height: 65px;
-    }
-
-    #player-count {
-        font-size: 1.6em;
-    }
-
-    .start-btn, .continue-btn {
-        padding: 12px 28px;
-        font-size: 1em;
-    }
-
-    .player-card {
-        min-width: 120px;
-        max-width: 120px;
-    }
-
-    .player-avatar {
-        width: 24px;
-        height: 24px;
-    }
-
-    .dice-display {
-        width: 42px;
-        height: 42px;
-    }
-
-    .dice-value {
-        font-size: 1.3em;
-    }
-
-    .roll-button {
-        padding: 8px 14px;
-        font-size: 0.8em;
-    }
-
-    .control-btn {
-        padding: 7px 9px;
-        font-size: 0.7em;
-    }
-}
-
-/* Touch Device Optimizations */
-@media (hover: none) and (pointer: coarse) {
-    /* Increase touch targets */
-    button, .mode-btn, .counter-btn {
-        min-height: 44px;
-        min-width: 44px;
-    }
-
-    /* Remove hover effects on touch */
-    .mode-btn:hover,
-    .counter-btn:hover,
-    .start-btn:hover,
-    .roll-button:hover,
-    .control-btn:hover {
-        transform: none;
-    }
-
-    /* Add touch feedback */
-    button:active,
-    .mode-btn:active,
-    .counter-btn:active,
-    .start-btn:active,
-    .roll-button:active,
-    .control-btn:active {
-        transform: scale(0.96);
-        opacity: 0.85;
-    }
-
-    /* Smooth scrolling */
-    .players-panel {
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-    }
-
-    .players-panel::-webkit-scrollbar {
-        height: 3px;
-    }
-
-    .players-panel::-webkit-scrollbar-thumb {
-        background: rgba(212, 166, 72, 0.4);
-        border-radius: 2px;
-    }
-
-    /* Prevent text selection on buttons */
-    button, .mode-btn, .counter-btn, .start-btn, .roll-button, .control-btn {
-        -webkit-user-select: none;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-}
-
-/* Very Small Height (landscape phones) */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-    .header {
-        padding: 5px 8px;
-    }
-
-    .header h1 {
-        font-size: 0.95em;
-    }
-
-    .game-info {
-        font-size: 0.7em;
-    }
-
-    .players-panel {
-        top: 40px;
-        max-height: 120px;
-    }
-
-    .player-card {
-        padding: 6px;
-    }
-
-    .dice-display {
-        width: 40px;
-        height: 40px;
-    }
-
-    .dice-value {
-        font-size: 1.2em;
-    }
-
-    .start-menu-content {
-        max-height: 95vh;
-        padding: 15px;
-    }
-
-    .game-title {
-        font-size: 1.5em;
-    }
-
-    .game-instructions {
-        font-size: 0.75em;
-    }
-}
-
-/* Safe area for notched devices (iPhone X+) */
-@supports (padding: max(0px)) {
-    .header {
-        padding-left: max(15px, env(safe-area-inset-left));
-        padding-right: max(15px, env(safe-area-inset-right));
-    }
-
-    .players-panel {
-        padding-left: max(10px, env(safe-area-inset-left));
-        padding-right: max(10px, env(safe-area-inset-right));
-        bottom: max(100px, calc(100px + env(safe-area-inset-bottom)));
-    }
-
-    .dice-container {
-        right: max(10px, env(safe-area-inset-right));
-        bottom: max(10px, env(safe-area-inset-bottom));
-    }
-
-    .controls {
-        left: max(10px, env(safe-area-inset-left));
-        bottom: max(10px, env(safe-area-inset-bottom));
-    }
-}

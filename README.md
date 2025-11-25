@@ -29,7 +29,7 @@ A stunning 3D implementation of the classic Snake and Ladder board game built wi
 - **Full 3D Environment**: Three.js powered immersive board
 - **Egyptian Art Style**: Sandstone textures, hieroglyphic-inspired design
 - **Dynamic Shadows**: Realistic shadow mapping with PCF soft shadows
-- **Smooth Animations**: 
+- **Smooth Animations**:
   - Player pieces jump and rotate while moving
   - Dice rolling with 3D rotation effects
   - Smooth camera transitions
@@ -88,7 +88,7 @@ A stunning 3D implementation of the classic Snake and Ladder board game built wi
 ### 🖥️ Modern UI
 
 - **Glassmorphism Effects**: Backdrop blur and transparency
-- **Egyptian Color Palette**: 
+- **Egyptian Color Palette**:
   - Gold (#edba58)
   - Terracotta (#cf7541)
   - Turquoise (#50a296)
@@ -106,7 +106,7 @@ A stunning 3D implementation of the classic Snake and Ladder board game built wi
 
 ### 🎥 Camera System
 
-- **Orbit Controls**: 
+- **Orbit Controls**:
   - Left-click + Drag: Rotate view
   - Right-click + Drag: Pan camera
   - Scroll Wheel: Zoom in/out (limited range)
@@ -124,18 +124,21 @@ A stunning 3D implementation of the classic Snake and Ladder board game built wi
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - npm, yarn, or pnpm
 
 ### Installation
 
 1. **Clone the repository**:
+
 ```bash
 git clone https://github.com/omidkhaksar/snake-and-ladder.git
 cd snake-and-ladder
 ```
 
 2. **Install dependencies**:
+
 ```bash
 npm install
 # or
@@ -143,6 +146,7 @@ pnpm install
 ```
 
 3. **Start the development server**:
+
 ```bash
 npm run dev
 ```
@@ -163,6 +167,7 @@ npm run preview
 ### Starting the Game
 
 1. **Choose Game Mode**:
+
    - 🤖 **vs Computer**: Play against AI
    - 👥 **Multiplayer**: Select 2-7 players
 
@@ -218,6 +223,7 @@ snake-ladder/
 ## 🛠️ Technical Architecture
 
 ### Core Technologies
+
 - **Three.js**: 3D rendering engine
 - **Vite**: Lightning-fast development server
 - **Vanilla JavaScript**: No framework dependencies
@@ -228,24 +234,28 @@ snake-ladder/
 ### Key Classes
 
 1. **Game3D**: Main game orchestrator
+
    - Scene management
    - 3D object initialization
    - Animation loop
    - Event handling
 
 2. **GameState**: Game logic controller
+
    - Turn management
    - Move validation
    - Snake/ladder detection
    - Win condition checking
 
 3. **Player**: Player piece controller
+
    - 3D model loading
    - Position updates
    - Rotation to face direction
    - Statistics tracking
 
 4. **AudioManager**: Sound system
+
    - Background music
    - Sound effects
    - Volume control
@@ -304,6 +314,7 @@ export const PLAYER_COLORS = [
 ### 3D Models
 
 Replace models in `/public/models/`:
+
 - `player.glb`: Player piece model
 - `snake.glb`: Snake body model
 
@@ -312,6 +323,7 @@ See `MODEL_ADJUSTMENT_GUIDE.md` for scaling and positioning.
 ### Audio Files
 
 Replace audio in `/public/sounds/`:
+
 - `background-music.mp3`: Looping background music
 - `click.ogg`: Button click sound
 - `dice-roll.mp3`: Dice rolling sound
@@ -322,20 +334,24 @@ Replace audio in `/public/sounds/`:
 ## 🐛 Troubleshooting
 
 ### Clear Corrupted Save
+
 Visit: `http://localhost:5173/clear-save.html`
 
 Or in browser console:
+
 ```javascript
 localStorage.clear();
 location.reload();
 ```
 
 ### Performance Issues
+
 - Lower shadow quality in `constants.js`
 - Reduce `MAX_PLAYERS`
 - Disable sound effects
 
 ### 3D Models Not Loading
+
 - Check browser console for errors
 - Verify model paths in `/public/models/`
 - Ensure models are in GLB format
@@ -351,6 +367,7 @@ location.reload();
 ## 🎓 What This Project Demonstrates
 
 ### Three.js Skills
+
 - Scene setup and management
 - 3D geometry creation
 - Material systems and lighting
@@ -360,6 +377,7 @@ location.reload();
 - Shadow mapping
 
 ### JavaScript Skills
+
 - ES6+ modern syntax
 - Class-based architecture
 - Async/await patterns
@@ -369,6 +387,7 @@ location.reload();
 - Web Audio API
 
 ### CSS Skills
+
 - Glassmorphism effects
 - CSS Grid and Flexbox
 - Animations and transitions
@@ -376,6 +395,7 @@ location.reload();
 - Modern UI patterns
 
 ### Software Engineering
+
 - Modular architecture
 - Separation of concerns
 - State management
@@ -390,6 +410,7 @@ MIT License - feel free to use this project for learning or commercial purposes.
 ## 🤝 Contributing
 
 Contributions welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Commit your changes
@@ -405,7 +426,8 @@ Contributions welcome! Please:
 
 ## 📞 Support
 
-Issues or questions? 
+Issues or questions?
+
 - Check the troubleshooting section
 - Review code comments
 - Open a GitHub issue

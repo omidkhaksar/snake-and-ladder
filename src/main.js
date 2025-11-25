@@ -55,34 +55,11 @@ class Game3D {
       CAMERA_SETTINGS.NEAR,
       CAMERA_SETTINGS.FAR
     );
-    
-    // Adjust camera position for mobile devices
-    const isMobile = window.innerWidth <= 768;
-    const isPortrait = window.innerHeight > window.innerWidth;
-    
-    if (isMobile && isPortrait) {
-      // Mobile portrait - further back and higher
-      this.camera.position.set(
-        CAMERA_SETTINGS.DEFAULT_POSITION.x,
-        CAMERA_SETTINGS.DEFAULT_POSITION.y + 3,
-        CAMERA_SETTINGS.DEFAULT_POSITION.z + 2
-      );
-    } else if (isMobile) {
-      // Mobile landscape - adjust slightly
-      this.camera.position.set(
-        CAMERA_SETTINGS.DEFAULT_POSITION.x,
-        CAMERA_SETTINGS.DEFAULT_POSITION.y + 1,
-        CAMERA_SETTINGS.DEFAULT_POSITION.z + 1
-      );
-    } else {
-      // Desktop - default position
-      this.camera.position.set(
-        CAMERA_SETTINGS.DEFAULT_POSITION.x,
-        CAMERA_SETTINGS.DEFAULT_POSITION.y,
-        CAMERA_SETTINGS.DEFAULT_POSITION.z
-      );
-    }
-    
+    this.camera.position.set(
+      CAMERA_SETTINGS.DEFAULT_POSITION.x,
+      CAMERA_SETTINGS.DEFAULT_POSITION.y,
+      CAMERA_SETTINGS.DEFAULT_POSITION.z
+    );
     this.camera.lookAt(0, 0, 0);
 
     // Create renderer
@@ -103,22 +80,6 @@ class Game3D {
     // Zoom limits
     this.controls.minDistance = CAMERA_SETTINGS.MIN_ZOOM_DISTANCE;
     this.controls.maxDistance = CAMERA_SETTINGS.MAX_ZOOM_DISTANCE;
-    
-    // Mobile-specific control settings
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      this.controls.enableDamping = true;
-      this.controls.dampingFactor = 0.08; // Slightly more damping for smoother mobile feel
-      this.controls.rotateSpeed = 0.7; // Slower rotation for better control on touch
-      this.controls.zoomSpeed = 0.8; // Slower zoom on mobile
-      this.controls.panSpeed = 0.7; // Slower pan on mobile
-      
-      // Enable touch controls
-      this.controls.touches = {
-        ONE: THREE.TOUCH.ROTATE,
-        TWO: THREE.TOUCH.DOLLY_PAN
-      };
-    }
 
     // Setup lights
     this.setupLights();
@@ -172,6 +133,9 @@ class Game3D {
 
     // Window resize handler
     window.addEventListener("resize", () => this.onWindowResize());
+
+    // Mobile/Touch device optimizations
+    this.setupMobileOptimizations();
 
     // Start animation loop
     this.animate();
@@ -656,7 +620,7 @@ class Game3D {
 
       // Play dice roll sound
       this.audioManager.playDiceRoll();
-      
+
       diceDisplay.classList.add("rolling");
 
       let rolls = 0;
@@ -787,13 +751,56 @@ class Game3D {
   }
 
   /**
+   * Setup mobile and touch device optimizations
+   */
+  setupMobileOptimizations() {
+    // Detect if device is mobile/touch
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isTouchDevice) {
+      // Prevent pull-to-refresh on mobile
+      document.body.addEventListener('touchmove', (e) => {
+        if (e.target === document.body) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Prevent double-tap zoom
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+
+      // Adjust camera controls for touch
+      if (this.controls) {
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.05;
+        this.controls.rotateSpeed = 0.7; // Slower rotation for touch
+        this.controls.zoomSpeed = 0.8;
+        this.controls.panSpeed = 0.8;
+      }
+    }
+
+    // Adjust renderer size on orientation change
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        this.onWindowResize();
+      }, 200);
+    });
+  }
+
+  /**
    * Animation loop
    */
   animate() {
     requestAnimationFrame(() => this.animate());
     
     if (this.controls) {
-      this.controls.update();
+    this.controls.update();
     }
 
     // Rotate player pieces (disabled for 3D models)
@@ -807,26 +814,11 @@ class Game3D {
   }
 
   /**
-   * Handle window resize and orientation change
+   * Handle window resize
    */
   onWindowResize() {
-    const isMobile = window.innerWidth <= 768;
-    const isPortrait = window.innerHeight > window.innerWidth;
-    
-    // Update camera aspect ratio
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    
-    // Adjust camera position based on device and orientation
-    if (isMobile && isPortrait) {
-      // Mobile portrait - zoom out more to see full board
-      this.camera.position.y = Math.max(this.camera.position.y, CAMERA_SETTINGS.DEFAULT_POSITION.y + 2);
-    } else if (isMobile) {
-      // Mobile landscape - moderate zoom
-      this.camera.position.y = Math.max(this.camera.position.y, CAMERA_SETTINGS.DEFAULT_POSITION.y);
-    }
-    
-    // Update renderer size
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }

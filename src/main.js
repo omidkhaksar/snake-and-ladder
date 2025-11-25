@@ -55,11 +55,34 @@ class Game3D {
       CAMERA_SETTINGS.NEAR,
       CAMERA_SETTINGS.FAR
     );
-    this.camera.position.set(
-      CAMERA_SETTINGS.DEFAULT_POSITION.x,
-      CAMERA_SETTINGS.DEFAULT_POSITION.y,
-      CAMERA_SETTINGS.DEFAULT_POSITION.z
-    );
+    
+    // Adjust camera position for mobile devices
+    const isMobile = window.innerWidth <= 768;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    
+    if (isMobile && isPortrait) {
+      // Mobile portrait - further back and higher
+      this.camera.position.set(
+        CAMERA_SETTINGS.DEFAULT_POSITION.x,
+        CAMERA_SETTINGS.DEFAULT_POSITION.y + 3,
+        CAMERA_SETTINGS.DEFAULT_POSITION.z + 2
+      );
+    } else if (isMobile) {
+      // Mobile landscape - adjust slightly
+      this.camera.position.set(
+        CAMERA_SETTINGS.DEFAULT_POSITION.x,
+        CAMERA_SETTINGS.DEFAULT_POSITION.y + 1,
+        CAMERA_SETTINGS.DEFAULT_POSITION.z + 1
+      );
+    } else {
+      // Desktop - default position
+      this.camera.position.set(
+        CAMERA_SETTINGS.DEFAULT_POSITION.x,
+        CAMERA_SETTINGS.DEFAULT_POSITION.y,
+        CAMERA_SETTINGS.DEFAULT_POSITION.z
+      );
+    }
+    
     this.camera.lookAt(0, 0, 0);
 
     // Create renderer
@@ -80,6 +103,22 @@ class Game3D {
     // Zoom limits
     this.controls.minDistance = CAMERA_SETTINGS.MIN_ZOOM_DISTANCE;
     this.controls.maxDistance = CAMERA_SETTINGS.MAX_ZOOM_DISTANCE;
+    
+    // Mobile-specific control settings
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      this.controls.enableDamping = true;
+      this.controls.dampingFactor = 0.08; // Slightly more damping for smoother mobile feel
+      this.controls.rotateSpeed = 0.7; // Slower rotation for better control on touch
+      this.controls.zoomSpeed = 0.8; // Slower zoom on mobile
+      this.controls.panSpeed = 0.7; // Slower pan on mobile
+      
+      // Enable touch controls
+      this.controls.touches = {
+        ONE: THREE.TOUCH.ROTATE,
+        TWO: THREE.TOUCH.DOLLY_PAN
+      };
+    }
 
     // Setup lights
     this.setupLights();
@@ -768,11 +807,26 @@ class Game3D {
   }
 
   /**
-   * Handle window resize
+   * Handle window resize and orientation change
    */
   onWindowResize() {
+    const isMobile = window.innerWidth <= 768;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    
+    // Update camera aspect ratio
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
+    
+    // Adjust camera position based on device and orientation
+    if (isMobile && isPortrait) {
+      // Mobile portrait - zoom out more to see full board
+      this.camera.position.y = Math.max(this.camera.position.y, CAMERA_SETTINGS.DEFAULT_POSITION.y + 2);
+    } else if (isMobile) {
+      // Mobile landscape - moderate zoom
+      this.camera.position.y = Math.max(this.camera.position.y, CAMERA_SETTINGS.DEFAULT_POSITION.y);
+    }
+    
+    // Update renderer size
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }
